@@ -60,6 +60,7 @@ function Clients() {
 
     const term = searchTerm.toLowerCase()
     return (
+      client.custom_id?.toLowerCase().includes(term) ||
       client.first_name?.toLowerCase().includes(term) ||
       client.last_name?.toLowerCase().includes(term) ||
       client.email?.toLowerCase().includes(term) ||
@@ -207,7 +208,7 @@ function Clients() {
             <table className="table">
               <thead>
                 <tr>
-                  <th>ID</th>
+                  <th>Custom ID</th>
                   <th>Name</th>
                   <th>Email</th>
                   <th>Phone</th>
@@ -226,7 +227,7 @@ function Clients() {
                         to={`/clients/${client.uisp_client_id}`}
                         style={{ color: 'var(--primary-color)', textDecoration: 'none', fontWeight: '600' }}
                       >
-                        {client.uisp_client_id}
+                        {client.custom_id || client.uisp_client_id}
                       </Link>
                     </td>
                     <td>

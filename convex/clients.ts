@@ -86,6 +86,7 @@ export const searchClients = query({
 export const upsertClient = mutation({
   args: {
     uisp_client_id: v.string(),
+    custom_id: v.optional(v.string()),
     first_name: v.optional(v.string()),
     last_name: v.optional(v.string()),
     email: v.optional(v.string()),
@@ -105,6 +106,7 @@ export const upsertClient = mutation({
     if (existing) {
       // Update existing client
       await ctx.db.patch(existing._id, {
+        custom_id: args.custom_id,
         first_name: args.first_name,
         last_name: args.last_name,
         email: args.email,
@@ -121,6 +123,7 @@ export const upsertClient = mutation({
       // Insert new client
       const id = await ctx.db.insert("clients", {
         uisp_client_id: args.uisp_client_id,
+        custom_id: args.custom_id,
         first_name: args.first_name || "",
         last_name: args.last_name || "",
         email: args.email,
@@ -161,6 +164,7 @@ export const bulkUpsertClients = mutation({
   args: {
     clients: v.array(v.object({
       uisp_client_id: v.string(),
+      custom_id: v.optional(v.string()),
       first_name: v.optional(v.string()),
       last_name: v.optional(v.string()),
       email: v.optional(v.string()),
@@ -182,6 +186,7 @@ export const bulkUpsertClients = mutation({
 
       if (existing) {
         await ctx.db.patch(existing._id, {
+          custom_id: clientData.custom_id,
           first_name: clientData.first_name,
           last_name: clientData.last_name,
           email: clientData.email,
@@ -196,6 +201,7 @@ export const bulkUpsertClients = mutation({
       } else {
         await ctx.db.insert("clients", {
           uisp_client_id: clientData.uisp_client_id,
+          custom_id: clientData.custom_id,
           first_name: clientData.first_name || "",
           last_name: clientData.last_name || "",
           email: clientData.email,

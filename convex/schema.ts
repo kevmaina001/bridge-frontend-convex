@@ -27,6 +27,7 @@ export default defineSchema({
   // Clients table
   clients: defineTable({
     uisp_client_id: v.string(),
+    custom_id: v.optional(v.string()), // userIdent from UISP - the Custom ID field
     first_name: v.optional(v.string()),
     last_name: v.optional(v.string()),
     company_name: v.optional(v.string()),

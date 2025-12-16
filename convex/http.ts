@@ -67,6 +67,7 @@ http.route({
       const result = await ctx.runMutation(api.clients.bulkUpsertClients, {
         clients: clients.map((client: any) => ({
           uisp_client_id: client.uisp_id?.toString() || client.uisp_client_id || client.id?.toString(),
+          custom_id: client.custom_id || client.userIdent,
           first_name: client.first_name || client.firstName,
           last_name: client.last_name || client.lastName,
           email: client.email,
