@@ -66,14 +66,14 @@ http.route({
       // Bulk upsert clients
       const result = await ctx.runMutation(api.clients.bulkUpsertClients, {
         clients: clients.map((client: any) => ({
-          uisp_client_id: client.uisp_client_id || client.id?.toString(),
+          uisp_client_id: client.uisp_id?.toString() || client.uisp_client_id || client.id?.toString(),
           first_name: client.first_name || client.firstName,
           last_name: client.last_name || client.lastName,
           email: client.email,
           phone: client.phone,
-          status: client.status || (client.isActive ? 'active' : 'inactive'),
+          status: client.is_active === false ? 'inactive' : (client.is_suspended ? 'suspended' : 'active'),
           account_balance: client.account_balance || client.accountBalance || 0,
-          invoice_balance: client.invoice_balance || client.invoiceBalance || 0,
+          invoice_balance: client.account_outstanding || client.invoice_balance || client.invoiceBalance || 0,
         }))
       });
 

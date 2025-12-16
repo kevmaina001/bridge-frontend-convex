@@ -11,12 +11,12 @@ import {
 
 function Dashboard() {
   const stats = useQuery(api.payments.getPaymentStats)
-  const recentPaymentsResult = useQuery(api.payments.getPayments, {
-    paginationOpts: { numItems: 10 }
+  const recentPayments = useQuery(api.payments.getPayments, {
+    limit: 10,
+    offset: 0
   })
 
-  const loading = stats === undefined || recentPaymentsResult === undefined
-  const recentPayments = recentPaymentsResult?.page || []
+  const loading = stats === undefined || recentPayments === undefined
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-KE', {
@@ -105,7 +105,7 @@ function Dashboard() {
           <Link to="/payments" className="button button-primary">View All</Link>
         </div>
 
-        {recentPayments.length === 0 ? (
+        {!recentPayments || recentPayments.length === 0 ? (
           <p style={{ textAlign: 'center', color: 'var(--text-secondary)', padding: '40px' }}>
             No payments yet
           </p>

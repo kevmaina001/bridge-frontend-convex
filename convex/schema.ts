@@ -26,7 +26,7 @@ export default defineSchema({
 
   // Clients table
   clients: defineTable({
-    uisp_id: v.number(),
+    uisp_client_id: v.string(),
     first_name: v.optional(v.string()),
     last_name: v.optional(v.string()),
     company_name: v.optional(v.string()),
@@ -38,22 +38,27 @@ export default defineSchema({
     country: v.optional(v.string()),
     state: v.optional(v.string()),
     zip_code: v.optional(v.string()),
-    balance: v.number(),
-    account_balance: v.number(),
-    account_outstanding: v.number(),
-    currency_code: v.string(),
-    is_active: v.boolean(),
-    is_suspended: v.boolean(),
+    balance: v.optional(v.number()),
+    account_balance: v.optional(v.number()),
+    account_outstanding: v.optional(v.number()),
+    currency_code: v.optional(v.string()),
+    is_active: v.optional(v.boolean()),
+    is_suspended: v.optional(v.boolean()),
     registration_date: v.optional(v.string()),
     previous_isp: v.optional(v.string()),
     tax_id: v.optional(v.string()),
     company_tax_id: v.optional(v.string()),
     note: v.optional(v.string()),
-    synced_at: v.number(), // timestamp
+    synced_at: v.optional(v.number()), // timestamp
     last_payment_at: v.optional(v.number()),
     uisp_data: v.optional(v.string()), // JSON string
+    status: v.optional(v.string()),
+    invoice_balance: v.optional(v.number()),
+    last_sync: v.optional(v.number()),
+    created_at: v.optional(v.number()),
+    updated_at: v.optional(v.number()),
   })
-    .index("by_uisp_id", ["uisp_id"])
+    .index("by_uisp_client_id", ["uisp_client_id"])
     .index("by_email", ["email"])
     .index("by_is_active", ["is_active"])
     .index("by_is_suspended", ["is_suspended"])

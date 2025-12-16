@@ -8,7 +8,12 @@
  * @module
  */
 
+import type * as clients from "../clients.js";
+import type * as http from "../http.js";
+import type * as mappings from "../mappings.js";
 import type * as payments from "../payments.js";
+import type * as syncLogs from "../syncLogs.js";
+import type * as webhookLogs from "../webhookLogs.js";
 
 import type {
   ApiFromModules,
@@ -17,7 +22,12 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  clients: typeof clients;
+  http: typeof http;
+  mappings: typeof mappings;
   payments: typeof payments;
+  syncLogs: typeof syncLogs;
+  webhookLogs: typeof webhookLogs;
 }>;
 
 /**

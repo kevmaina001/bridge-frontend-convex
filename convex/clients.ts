@@ -4,18 +4,19 @@ import { query, mutation } from "./_generated/server";
 // Query: Get all clients with pagination
 export const getClients = query({
   args: {
-    paginationOpts: v.optional(v.object({
-      numItems: v.number(),
-      cursor: v.optional(v.string()),
-    })),
+    limit: v.optional(v.number()),
+    offset: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const results = await ctx.db
+    const limit = args.limit ?? 50;
+    const offset = args.offset ?? 0;
+
+    const clients = await ctx.db
       .query("clients")
       .order("desc")
-      .paginate(args.paginationOpts || { numItems: 50 });
+      .collect();
 
-    return results;
+    return clients.slice(offset, offset + limit);
   },
 });
 

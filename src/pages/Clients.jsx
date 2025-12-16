@@ -11,15 +11,15 @@ function Clients() {
   const [statusFilter, setStatusFilter] = useState('all') // all, active, suspended, inactive
 
   const stats = useQuery(api.clients.getClientStats)
-  const clientsResult = useQuery(api.clients.getClients, {
-    paginationOpts: { numItems: 500 }
+  const allClients = useQuery(api.clients.getClients, {
+    limit: 500,
+    offset: 0
   })
 
-  const loading = stats === undefined || clientsResult === undefined
-  const allClients = clientsResult?.page || []
+  const loading = stats === undefined || allClients === undefined
 
   // Client-side filtering based on status
-  const clients = allClients.filter(client => {
+  const clients = (allClients || []).filter(client => {
     if (statusFilter === 'active') {
       return client.status === 'active';
     } else if (statusFilter === 'suspended') {

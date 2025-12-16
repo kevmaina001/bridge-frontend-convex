@@ -8,12 +8,12 @@ function Payments() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState('all')
 
-  const paymentsResult = useQuery(api.payments.getPayments, {
-    paginationOpts: { numItems: 100 }
+  const payments = useQuery(api.payments.getPayments, {
+    limit: 100,
+    offset: 0
   })
 
-  const loading = paymentsResult === undefined
-  const payments = paymentsResult?.page || []
+  const loading = payments === undefined
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-KE', {
@@ -35,7 +35,7 @@ function Payments() {
     return <span className={statusClasses[status] || 'badge'}>{status}</span>
   }
 
-  const filteredPayments = payments.filter(payment => {
+  const filteredPayments = (payments || []).filter(payment => {
     const matchesSearch =
       payment.transaction_id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       payment.client_id?.toString().includes(searchTerm)
