@@ -12,6 +12,12 @@ export const insertPayment = mutation({
     payment_type: v.optional(v.string()),
     payment_method: v.optional(v.string()),
     created_at: v.string(),
+    received_at: v.optional(v.number()),
+    status: v.optional(v.string()),
+    retry_count: v.optional(v.number()),
+    uisp_response: v.optional(v.string()),
+    error_message: v.optional(v.string()),
+    last_retry_at: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const paymentId = await ctx.db.insert("payments", {
@@ -23,9 +29,12 @@ export const insertPayment = mutation({
       payment_type: args.payment_type,
       payment_method: args.payment_method,
       created_at: args.created_at,
-      received_at: Date.now(),
-      status: "pending",
-      retry_count: 0,
+      received_at: args.received_at || Date.now(),
+      status: args.status || "pending",
+      retry_count: args.retry_count || 0,
+      uisp_response: args.uisp_response,
+      error_message: args.error_message,
+      last_retry_at: args.last_retry_at,
     });
     return paymentId;
   },
@@ -34,24 +43,13 @@ export const insertPayment = mutation({
 // Update payment status
 export const updatePaymentStatus = mutation({
   args: {
-    transaction_id: v.string(),
+    paymentId: v.id("payments"),
     status: v.string(),
     uisp_response: v.optional(v.string()),
     error_message: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    const payment = await ctx.db
-      .query("payments")
-      .withIndex("by_transaction_id", (q) =>
-        q.eq("transaction_id", args.transaction_id)
-      )
-      .first();
-
-    if (!payment) {
-      throw new Error(`Payment not found: ${args.transaction_id}`);
-    }
-
-    await ctx.db.patch(payment._id, {
+    await ctx.db.patch(args.paymentId, {
       status: args.status,
       uisp_response: args.uisp_response,
       error_message: args.error_message,
