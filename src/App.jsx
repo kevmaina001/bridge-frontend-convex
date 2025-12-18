@@ -3,6 +3,7 @@ import Dashboard from './pages/Dashboard'
 import Payments from './pages/Payments'
 import Clients from './pages/Clients'
 import ClientDetails from './pages/ClientDetails'
+import SplynxCustomers from './pages/SplynxCustomers'
 import './App.css'
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
                 <Link to="/" className="nav-link">Dashboard</Link>
                 <Link to="/payments" className="nav-link">Payments</Link>
                 <Link to="/clients" className="nav-link">Clients</Link>
+                <Link to="/splynx-customers" className="nav-link">Splynx Customers</Link>
               </nav>
             </div>
           </div>
@@ -29,6 +31,7 @@ function App() {
               <Route path="/payments" element={<Payments />} />
               <Route path="/clients" element={<Clients />} />
               <Route path="/clients/:clientId" element={<ClientDetails />} />
+              <Route path="/splynx-customers" element={<SplynxCustomers />} />
             </Routes>
           </div>
         </main>

@@ -114,4 +114,12 @@ export const clientAPI = {
   }
 }
 
+export const splynxAPI = {
+  // Sync Splynx customers
+  syncCustomers: async () => {
+    const response = await api.post('/splynx/customers/sync')
+    return response.data
+  }
+}
+
 export default api

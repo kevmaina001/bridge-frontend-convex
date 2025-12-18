@@ -65,6 +65,28 @@ export default defineSchema({
     .index("by_is_suspended", ["is_suspended"])
     .index("by_synced_at", ["synced_at"]),
 
+  // Splynx customers table
+  splynx_customers: defineTable({
+    splynx_id: v.string(),
+    login: v.optional(v.string()),
+    name: v.optional(v.string()),
+    email: v.optional(v.string()),
+    phone: v.optional(v.string()),
+    status: v.optional(v.string()),
+    billing_type: v.optional(v.string()),
+    category: v.optional(v.string()),
+    street_1: v.optional(v.string()),
+    city: v.optional(v.string()),
+    zip_code: v.optional(v.string()),
+    synced_at: v.optional(v.number()),
+    created_at: v.optional(v.number()),
+    updated_at: v.optional(v.number()),
+  })
+    .index("by_splynx_id", ["splynx_id"])
+    .index("by_login", ["login"])
+    .index("by_email", ["email"])
+    .index("by_status", ["status"]),
+
   // Customer mappings (Splynx ID -> UISP ID)
   customer_mappings: defineTable({
     splynx_customer_id: v.string(),
