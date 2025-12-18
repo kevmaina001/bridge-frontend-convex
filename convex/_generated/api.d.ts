@@ -9,9 +9,11 @@
  */
 
 import type * as clients from "../clients.js";
+import type * as customer_mappings from "../customer_mappings.js";
 import type * as http from "../http.js";
 import type * as mappings from "../mappings.js";
 import type * as payments from "../payments.js";
+import type * as splynx_customers from "../splynx_customers.js";
 import type * as syncLogs from "../syncLogs.js";
 import type * as webhookLogs from "../webhookLogs.js";
 
@@ -23,9 +25,11 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   clients: typeof clients;
+  customer_mappings: typeof customer_mappings;
   http: typeof http;
   mappings: typeof mappings;
   payments: typeof payments;
+  splynx_customers: typeof splynx_customers;
   syncLogs: typeof syncLogs;
   webhookLogs: typeof webhookLogs;
 }>;
