@@ -51,8 +51,8 @@ function Dashboard() {
     )
   }
 
-  const successRate = stats?.totalPayments > 0
-    ? ((stats.successfulPayments / stats.totalPayments) * 100).toFixed(1)
+  const successRate = stats?.total_payments > 0
+    ? ((stats.successful_payments / stats.total_payments) * 100).toFixed(1)
     : 0
 
   const matchRate = mappingStats?.totalSplynxCustomers > 0
@@ -91,9 +91,9 @@ function Dashboard() {
               <TrendingUp size={20} />
             </div>
           </div>
-          <div className="stat-value">{stats?.totalPayments || 0}</div>
+          <div className="stat-value">{stats?.total_payments || 0}</div>
           <div className="stat-footer">
-            <span className="stat-label">{formatCurrency(stats?.totalAmount)}</span>
+            <span className="stat-label">{formatCurrency(stats?.total_amount)}</span>
           </div>
         </div>
 
@@ -104,9 +104,9 @@ function Dashboard() {
               <CheckCircle size={20} />
             </div>
           </div>
-          <div className="stat-value">{stats?.successfulPayments || 0}</div>
+          <div className="stat-value">{stats?.successful_payments || 0}</div>
           <div className="stat-footer">
-            <span className="stat-label">{formatCurrency(stats?.successfulAmount)}</span>
+            <span className="stat-label">{formatCurrency(stats?.successful_amount)}</span>
             <span className="stat-trend positive">+{successRate}%</span>
           </div>
         </div>
@@ -118,7 +118,7 @@ function Dashboard() {
               <XCircle size={20} />
             </div>
           </div>
-          <div className="stat-value">{stats?.failedPayments || 0}</div>
+          <div className="stat-value">{stats?.failed_payments || 0}</div>
           <div className="stat-footer">
             <span className="stat-label">Requires attention</span>
           </div>
@@ -131,7 +131,7 @@ function Dashboard() {
               <Clock size={20} />
             </div>
           </div>
-          <div className="stat-value">{stats?.pendingPayments || 0}</div>
+          <div className="stat-value">{stats?.pending_payments || 0}</div>
           <div className="stat-footer">
             <span className="stat-label">In progress</span>
           </div>
