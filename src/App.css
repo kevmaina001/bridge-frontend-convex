@@ -2,6 +2,9 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 .header {
@@ -194,6 +197,8 @@
 .main {
   flex: 1;
   padding: 32px 0;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 @media (max-width: 768px) {
@@ -216,6 +221,8 @@
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 24px;
   margin-bottom: 32px;
+  width: 100%;
+  max-width: 100%;
 }
 
 @media (max-width: 768px) {
@@ -223,6 +230,12 @@
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 12px;
     margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -616,4 +629,97 @@
 
 .stat-card:hover .stat-icon {
   transform: scale(1.1) rotate(5deg);
+}
+
+/* Alert Components */
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  animation: fadeInUp 0.3s ease;
+}
+
+.alert-success {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border: 1px solid var(--success-color);
+  color: #065f46;
+}
+
+.alert-error {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  border: 1px solid var(--error-color);
+  color: #991b1b;
+}
+
+.alert svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.alert strong {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.alert p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* SMS Page Specific */
+.send-sms-page .client-checkbox-item:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.textarea-field:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.button-secondary {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.button-secondary:hover {
+  background: var(--bg-secondary);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+/* Responsive SMS Page */
+@media (max-width: 1024px) {
+  .send-sms-page > div {
+    grid-template-columns: 1fr !important;
+  }
+
+  .send-sms-page .card:last-child {
+    position: static !important;
+  }
 }

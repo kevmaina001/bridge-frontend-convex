@@ -6,6 +6,7 @@ import Clients from './pages/Clients'
 import ClientDetails from './pages/ClientDetails'
 import SplynxCustomers from './pages/SplynxCustomers'
 import CustomerMappings from './pages/CustomerMappings'
+import SendSMS from './pages/SendSMS'
 import { Menu, X, Activity } from 'lucide-react'
 import './App.css'
 
@@ -61,6 +62,9 @@ function App() {
                 <Link to="/clients" className="nav-link" onClick={closeMobileMenu}>
                   Clients
                 </Link>
+                <Link to="/sms" className="nav-link" onClick={closeMobileMenu}>
+                  Send SMS
+                </Link>
                 <Link to="/splynx-customers" className="nav-link" onClick={closeMobileMenu}>
                   Splynx Customers
                 </Link>
@@ -82,6 +86,7 @@ function App() {
               <Route path="/payments" element={<Payments />} />
               <Route path="/clients" element={<Clients />} />
               <Route path="/clients/:clientId" element={<ClientDetails />} />
+              <Route path="/sms" element={<SendSMS />} />
               <Route path="/splynx-customers" element={<SplynxCustomers />} />
               <Route path="/mappings" element={<CustomerMappings />} />
             </Routes>
@@ -90,7 +95,7 @@ function App() {
 
         <footer className="footer">
           <div className="container">
-            <p>Splynx-UISP Payment Bridge &copy; 2024</p>
+            <p>Splynx-UISP Payment Bridge &copy; 2025</p>
           </div>
         </footer>
       </div>
