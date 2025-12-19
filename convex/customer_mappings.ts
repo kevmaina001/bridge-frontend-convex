@@ -98,3 +98,63 @@ export const deleteCustomerMapping = mutation({
     return { success: true, message: "Mapping deleted" };
   },
 });
+
+// Query: Get auto-detected matches between Splynx and UISP
+export const getAutoDetectedMatches = query({
+  args: {},
+  handler: async (ctx) => {
+    const splynxCustomers = await ctx.db.query("splynx_customers").collect();
+    const uispClients = await ctx.db.query("clients").collect();
+
+    const matches = [];
+
+    for (const splynxCustomer of splynxCustomers) {
+      if (!splynxCustomer.login) continue;
+
+      // Find matching UISP client by custom_id
+      const matchingUispClient = uispClients.find(
+        (client) => client.custom_id?.toLowerCase() === splynxCustomer.login.toLowerCase()
+      );
+
+      if (matchingUispClient) {
+        matches.push({
+          splynx_customer: splynxCustomer,
+          uisp_client: matchingUispClient,
+          match_field: "login ↔ custom_id",
+        });
+      }
+    }
+
+    return matches;
+  },
+});
+
+// Query: Get auto-match statistics
+export const getAutoMatchStats = query({
+  args: {},
+  handler: async (ctx) => {
+    const splynxCustomers = await ctx.db.query("splynx_customers").collect();
+    const uispClients = await ctx.db.query("clients").collect();
+
+    let matchedCount = 0;
+
+    for (const splynxCustomer of splynxCustomers) {
+      if (!splynxCustomer.login) continue;
+
+      const matchingUispClient = uispClients.find(
+        (client) => client.custom_id?.toLowerCase() === splynxCustomer.login.toLowerCase()
+      );
+
+      if (matchingUispClient) {
+        matchedCount++;
+      }
+    }
+
+    return {
+      totalSplynxCustomers: splynxCustomers.length,
+      totalUispClients: uispClients.length,
+      matchedCustomers: matchedCount,
+      unmatchedSplynxCustomers: splynxCustomers.length - matchedCount,
+    };
+  },
+});
