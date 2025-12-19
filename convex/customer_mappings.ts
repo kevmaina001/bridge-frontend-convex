@@ -158,3 +158,77 @@ export const getAutoMatchStats = query({
     };
   },
 });
+
+// Mutation: Proactively create customer mappings during sync
+export const createProactiveMappings = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const splynxCustomers = await ctx.db.query("splynx_customers").collect();
+    const uispClients = await ctx.db.query("clients").collect();
+
+    let createdCount = 0;
+    let updatedCount = 0;
+    let skippedCount = 0;
+
+    for (const splynxCustomer of splynxCustomers) {
+      if (!splynxCustomer.login) {
+        skippedCount++;
+        continue;
+      }
+
+      // Find matching UISP client by custom_id
+      const matchingUispClient = uispClients.find(
+        (client) => client.custom_id?.toLowerCase() === splynxCustomer.login.toLowerCase()
+      );
+
+      if (!matchingUispClient) {
+        skippedCount++;
+        continue;
+      }
+
+      // Parse UISP client ID as number
+      const uispClientId = parseInt(matchingUispClient.uisp_client_id);
+      if (isNaN(uispClientId)) {
+        skippedCount++;
+        continue;
+      }
+
+      // Check if mapping already exists
+      const existing = await ctx.db
+        .query("customer_mappings")
+        .withIndex("by_splynx_customer_id", (q) => q.eq("splynx_customer_id", splynxCustomer.splynx_id))
+        .first();
+
+      if (existing) {
+        // Update if UISP client changed
+        if (existing.uisp_client_id !== uispClientId) {
+          await ctx.db.patch(existing._id, {
+            uisp_client_id: uispClientId,
+            notes: "Auto-matched during sync",
+            updated_at: Date.now(),
+          });
+          updatedCount++;
+        } else {
+          skippedCount++;
+        }
+      } else {
+        // Create new mapping
+        await ctx.db.insert("customer_mappings", {
+          splynx_customer_id: splynxCustomer.splynx_id,
+          uisp_client_id: uispClientId,
+          notes: "Auto-matched during sync",
+          created_at: Date.now(),
+          updated_at: Date.now(),
+        });
+        createdCount++;
+      }
+    }
+
+    return {
+      created: createdCount,
+      updated: updatedCount,
+      skipped: skippedCount,
+      total: createdCount + updatedCount + skippedCount,
+    };
+  },
+});
