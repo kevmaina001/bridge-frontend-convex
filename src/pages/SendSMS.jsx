@@ -53,14 +53,13 @@ function SendSMS() {
       return
     }
 
-    setS
-
-ending(true)
+    setSending(true)
     setError(null)
     setResult(null)
 
     try {
-      const response = await axios.post('http://localhost:3000/api/sms/send-to-clients', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+      const response = await axios.post(`${API_URL}/api/sms/send-to-clients`, {
         clientIds: selectedClients,
         message: message,
         senderId: senderId || undefined
